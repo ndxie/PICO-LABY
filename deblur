@@ -17,22 +17,11 @@ qiime tools view demux-joined.qzv
 qiime quality-filter q-score-joined --i-demux demux-joined.qza --o-filtered-sequences demux-joined-filtered.qza --o-filter-stats demux-joined-filtered-stats.qza
 
 
-#prepare reference database#
-
-qiime tools import --type¡®FeatureData[Sequence]¡¯--input-path 99_otus.fasta --output-path 99_otus.qza
-
-qiime tools import --type¡®FeatureData[Taxonomy]¡¯--source-format HeaderlessTSVTaxonomyFormat --input-path 99_otu_taxonomy.txt --output-path ref-taxonomy.qza
-
-qiime feature-classifier extract-reads --i-sequences 99_otus.qza --p-f-primer <forward-primer-sequence> --p-r-primer <reverse-primer-sequence> --p-trunc-len 398 --o-reads ref-seqs.qza
-
-qiime feature-classifier fit-classifier-naive-bayes --i-reference-reads ref-seqs.qza --i-reference-taxonomy ref-taxonomy.qza --o-classifier gg_study1_classifier.qza
-
-
 #deblur#
 
-qiime tools import --type 'FeatureData[Sequence]' --input-path 99_otus.fasta --output-path 99_otus.qza
+qiime tools import --type 'FeatureData[Sequence]' --input-path silva_132_99_18S.fna --output-path silva_132_99_18S.qza
 
-qiime deblur denoise-other --i-demultiplexed-seqs demux-joined-filtered.qza --i-reference-seqs ref-seqs.qza --p-trim-length 398 --o-representative-sequences rep-seqs.qza --o-table table.qza --p-sample-stats --o-stats deblur-stats.qza 
+qiime deblur denoise-other --i-demultiplexed-seqs demux-joined-filtered.qza --i-reference-seqs silva_132_99_18S.qza --p-trim-length 398 --o-representative-sequences rep-seqs.qza --o-table table.qza --p-sample-stats --o-stats deblur-stats.qza 
 
 qiime metadata tabulate --m-input-file demux-joined-filtered-stats.qza --o-visualization demux-filter-stats.qzv
 
@@ -40,6 +29,12 @@ qiime deblur visualize-stats --i-deblur-stats deblur-stats.qza --o-visualization
 
 
 #taxonomic annotations#
+
+qiime tools import --type 'FeatureData[Taxonomy]' --source-format HeaderlessTSVTaxonomyFormat --input-path 99_otu_taxonomy.txt --output-path ref-taxonomy.qza
+
+qiime feature-classifier extract-reads --i-sequences 99_otus.qza --p-f-primer <forward-primer-sequence> --p-r-primer <reverse-primer-sequence> --p-trunc-len 398 --o-reads ref-seqs.qza
+
+qiime feature-classifier fit-classifier-naive-bayes --i-reference-reads ref-seqs.qza --i-reference-taxonomy ref-taxonomy.qza --o-classifier gg_study1_classifier.qza
 
 qiime feature-classifier classify-sklearn --i-classifier gg_study1_classifier.qza --i-reads clustered-sequences.qza --o-classification taxonomy.qza
 
