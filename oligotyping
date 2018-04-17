@@ -2,6 +2,7 @@
 
 qiime tools import --type 'SampleData[PairedEndSequencesWithQuality]' --input-path rawdata --source-format CasavaOneEightSingleLanePerSampleDirFmt --output-path demux.qza
 
+
 #join the reads#
 
 qiime vsearch join-pairs --i-demultiplexed-seqs demux.qza --o-joined-sequences demux-joined.qza
@@ -10,22 +11,10 @@ qiime demux summarize --i-data demux-joined.qza --o-visualization demux-joined.q
 
 qiime tools view demux-joined.qzv
 
+
 #quality filter#
 
 qiime quality-filter q-score-joined --i-demux demux-joined.qza --o-filtered-sequences demux-joined-filtered.qza --o-filter-stats demux-joined-filtered-stats.qza
-
-#deblur#
-
-qiime tools import --type 'FeatureData[Sequence]' --input-path 99_otus.fasta --output-path 99_otus.qza
-
-qiime deblur denoise-other --i-demultiplexed-seqs demux-joined-filtered.qza --i-reference-seqs ref-seqs.qza --p-trim-length 398 --o-representative-sequences rep-seqs.qza --o-table table.qza --p-sample-stats --o-stats deblur-stats.qza 
-
-qiime metadata tabulate --m-input-file demux-joined-filtered-stats.qza --o-visualization demux-filter-stats.qzv
-
-qiime deblur visualize-stats --i-deblur-stats deblur-stats.qza --o-visualization deblur-stats.qzv
-
-
-
 
 
 #prepare reference database#
@@ -39,11 +28,23 @@ qiime feature-classifier extract-reads --i-sequences 99_otus.qza --p-f-primer <f
 qiime feature-classifier fit-classifier-naive-bayes --i-reference-reads ref-seqs.qza --i-reference-taxonomy ref-taxonomy.qza --o-classifier gg_study1_classifier.qza
 
 
+#deblur#
+
+qiime tools import --type 'FeatureData[Sequence]' --input-path 99_otus.fasta --output-path 99_otus.qza
+
+qiime deblur denoise-other --i-demultiplexed-seqs demux-joined-filtered.qza --i-reference-seqs ref-seqs.qza --p-trim-length 398 --o-representative-sequences rep-seqs.qza --o-table table.qza --p-sample-stats --o-stats deblur-stats.qza 
+
+qiime metadata tabulate --m-input-file demux-joined-filtered-stats.qza --o-visualization demux-filter-stats.qzv
+
+qiime deblur visualize-stats --i-deblur-stats deblur-stats.qza --o-visualization deblur-stats.qzv
+
+
 #taxonomic annotations#
 
 qiime feature-classifier classify-sklearn --i-classifier gg_study1_classifier.qza --i-reads clustered-sequences.qza --o-classification taxonomy.qza
 
 qiime metadata tabulate --m-input-file taxonomy.qza --o-visualization taxonomy.qzv
+
 
 #non-laby removal#
 
