@@ -1,6 +1,6 @@
 #CASAVA 1.8 demultiplexed data import#
 
-qiime tools import --type¡®SampleData[PairedEndSequencesWithQuality]¡¯--input-path rawdata --source-format CasavaOneEightSingleLanePerSampleDirFmt --output-path demux.qza
+qiime tools import --type 'SampleData[PairedEndSequencesWithQuality]' --input-path rawdata --source-format CasavaOneEightSingleLanePerSampleDirFmt --output-path demux.qza
 
 #join the reads#
 
@@ -16,7 +16,7 @@ qiime quality-filter q-score-joined --i-demux demux-joined.qza --o-filtered-sequ
 
 #deblur#
 
-qiime tools import --type¡®FeatureData[Sequence]¡¯--input-path 99_otus.fasta --output-path 99_otus.qza
+qiime tools import --type 'FeatureData[Sequence]' --input-path 99_otus.fasta --output-path 99_otus.qza
 
 qiime deblur denoise-other --i-demultiplexed-seqs demux-joined-filtered.qza --i-reference-seqs ref-seqs.qza --p-trim-length 398 --o-representative-sequences rep-seqs.qza --o-table table.qza --p-sample-stats --o-stats deblur-stats.qza 
 
@@ -30,9 +30,9 @@ qiime deblur visualize-stats --i-deblur-stats deblur-stats.qza --o-visualization
 
 #prepare reference database#
 
-qiime tools import --type¡®FeatureData[Sequence]¡¯--input-path 99_otus.fasta --output-path 99_otus.qza
+qiime tools import --typeÂ¡Â®FeatureData[Sequence]Â¡Â¯--input-path 99_otus.fasta --output-path 99_otus.qza
 
-qiime tools import --type¡®FeatureData[Taxonomy]¡¯--source-format HeaderlessTSVTaxonomyFormat --input-path 99_otu_taxonomy.txt --output-path ref-taxonomy.qza
+qiime tools import --typeÂ¡Â®FeatureData[Taxonomy]Â¡Â¯--source-format HeaderlessTSVTaxonomyFormat --input-path 99_otu_taxonomy.txt --output-path ref-taxonomy.qza
 
 qiime feature-classifier extract-reads --i-sequences 99_otus.qza --p-f-primer <forward-primer-sequence> --p-r-primer <reverse-primer-sequence> --p-trunc-len 398 --o-reads ref-seqs.qza
 
