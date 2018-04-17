@@ -28,15 +28,15 @@ qiime metadata tabulate --m-input-file demux-joined-filtered-stats.qza --o-visua
 qiime deblur visualize-stats --i-deblur-stats deblur-stats.qza --o-visualization deblur-stats.qzv
 
 
-#taxonomic annotations#
+#taxonomy annotation#
 
 qiime tools import --type 'FeatureData[Taxonomy]' --source-format HeaderlessTSVTaxonomyFormat --input-path 99_otu_taxonomy.txt --output-path ref-taxonomy.qza
 
-qiime feature-classifier extract-reads --i-sequences 99_otus.qza --p-f-primer <forward-primer-sequence> --p-r-primer <reverse-primer-sequence> --p-trunc-len 398 --o-reads ref-seqs.qza
+qiime feature-classifier extract-reads --i-sequences 99_otus.qza --p-f-primer <GGGATCGAAGATGATTAG> --p-r-primer <CWCRAACTTCCTTCCGGT> --p-trunc-len 398 --o-reads laby-seqs.qza
 
-qiime feature-classifier fit-classifier-naive-bayes --i-reference-reads ref-seqs.qza --i-reference-taxonomy ref-taxonomy.qza --o-classifier gg_study1_classifier.qza
+qiime feature-classifier fit-classifier-naive-bayes --i-reference-reads ref-seqs.qza --i-reference-taxonomy ref-taxonomy.qza --o-classifier laby-classifier.qza
 
-qiime feature-classifier classify-sklearn --i-classifier gg_study1_classifier.qza --i-reads clustered-sequences.qza --o-classification taxonomy.qza
+qiime feature-classifier classify-sklearn --i-classifier laby-classifier.qza --i-reads clustered-sequences.qza --o-classification taxonomy.qza
 
 qiime metadata tabulate --m-input-file taxonomy.qza --o-visualization taxonomy.qzv
 
