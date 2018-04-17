@@ -30,9 +30,9 @@ qiime deblur visualize-stats --i-deblur-stats deblur-stats.qza --o-visualization
 
 #taxonomy annotation#
 
-qiime tools import --type 'FeatureData[Taxonomy]' --source-format HeaderlessTSVTaxonomyFormat --input-path 99_otu_taxonomy.txt --output-path ref-taxonomy.qza
+qiime tools import --type 'FeatureData[Taxonomy]' --source-format HeaderlessTSVTaxonomyFormat --input-path taxonomy_all_levels.txt --output-path ref-taxonomy.qza
 
-qiime feature-classifier extract-reads --i-sequences 99_otus.qza --p-f-primer <GGGATCGAAGATGATTAG> --p-r-primer <CWCRAACTTCCTTCCGGT> --p-trunc-len 398 --o-reads laby-seqs.qza
+qiime feature-classifier extract-reads --i-sequences 99_otus.qza --p-f-primer <GGGATCGAAGATGATTAG> --p-r-primer <CWCRAACTTCCTTCCGGT> --p-trunc-len 398 --o-reads ref-seqs.qza
 
 qiime feature-classifier fit-classifier-naive-bayes --i-reference-reads ref-seqs.qza --i-reference-taxonomy ref-taxonomy.qza --o-classifier laby-classifier.qza
 
