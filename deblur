@@ -32,11 +32,11 @@ qiime deblur visualize-stats --i-deblur-stats deblur-stats.qza --o-visualization
 
 qiime tools import --type 'FeatureData[Taxonomy]' --source-format HeaderlessTSVTaxonomyFormat --input-path taxonomy_all_levels.txt --output-path ref-taxonomy.qza
 
-qiime feature-classifier extract-reads --i-sequences silva_132_99_18S.qza --p-f-primer <GGGATCGAAGATGATTAG> --p-r-primer <CWCRAACTTCCTTCCGGT> --p-trunc-len 398 --o-reads ref-seqs.qza
+qiime feature-classifier extract-reads --i-sequences silva_132_99_18S.qza --p-f-primer GGGATCGAAGATGATTAG --p-r-primer CWCRAACTTCCTTCCGGT --p-trunc-len 398 --o-reads ref-seqs.qza
 
 qiime feature-classifier fit-classifier-naive-bayes --i-reference-reads ref-seqs.qza --i-reference-taxonomy ref-taxonomy.qza --o-classifier laby-classifier.qza
 
-qiime feature-classifier classify-sklearn --i-classifier laby-classifier.qza --i-reads clustered-sequences.qza --o-classification taxonomy.qza
+qiime feature-classifier classify-sklearn --i-classifier laby-classifier.qza --i-reads rep-seqs.qza --o-classification taxonomy.qza
 
 qiime metadata tabulate --m-input-file taxonomy.qza --o-visualization taxonomy.qzv
 
@@ -46,7 +46,5 @@ qiime metadata tabulate --m-input-file taxonomy.qza --o-visualization taxonomy.q
 #rarefaction#
 
 #diversity#
-
-Q: Reference database for deblur? Method and reference database for blast?
 
 
