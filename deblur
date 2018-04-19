@@ -16,14 +16,14 @@ qiime tools view demux-joined.qzv
 
 qiime quality-filter q-score-joined --i-demux demux-joined.qza --o-filtered-sequences demux-joined-filtered.qza --o-filter-stats demux-joined-filtered-stats.qza
 
+qiime metadata tabulate --m-input-file demux-joined-filtered-stats.qza --o-visualization demux-filter-stats.qzv
+
 
 #deblur#
 
 qiime tools import --type 'FeatureData[Sequence]' --input-path silva_132_99_18S.fna --output-path silva_132_99_18S.qza
 
 qiime deblur denoise-other --i-demultiplexed-seqs demux-joined-filtered.qza --i-reference-seqs silva_132_99_18S.qza --p-trim-length 398 --o-representative-sequences rep-seqs.qza --o-table table.qza --p-sample-stats --o-stats deblur-stats.qza 
-
-qiime metadata tabulate --m-input-file demux-joined-filtered-stats.qza --o-visualization demux-filter-stats.qzv
 
 qiime deblur visualize-stats --i-deblur-stats deblur-stats.qza --o-visualization deblur-stats.qzv
 
