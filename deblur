@@ -43,8 +43,19 @@ qiime metadata tabulate --m-input-file taxonomy.qza --o-visualization taxonomy.q
 
 #non-laby removal#
 
+qiime taxa filter-table --i table table.qza --i-taxonomy taxonomy.qza --p-include Labyrinthulomycetes --o-filtered-table table-laby.qza
+
 #rarefaction#
+
+qiime diversity alpha-rarefaction --i-table table-laby.qza --p-max-depth 20000 --m-metadata-file metadata.txt --o-visualization laby-rarefaction-curves.qzv
+
+qiime feature-table rarefy --i-table table-laby.qza --p-sampling-depth 10000 --o-rarefied-table table-laby-rarefied.qza
+
+qiime tools export table-laby-rarefied.qza --output-dir table-laby-rarefied
+
 
 #diversity#
 
+qiime taxa barplot --i-table table-laby-rarefied.qza --i-taxonomy taxonomy.qza --m-metadata-file metadata.txt --o-visualization barplot.qzv
+ 
 
