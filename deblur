@@ -14,7 +14,7 @@ qiime tools view demux-joined.qzv
 
 #quality filter#
 
-qiime quality-filter q-score-joined --i-demux demux-joined.qza --o-filtered-sequences demux-joined-filtered.qza --o-filter-stats demux-joined-filtered-stats.qza
+qiime quality-filter q-score-joined --i-demux demux-joined.qza --p-min-quality 20 --p-quality-window 3 --o-filtered-sequences demux-joined-filtered.qza --o-filter-stats demux-joined-filtered-stats.qza
 
 qiime metadata tabulate --m-input-file demux-joined-filtered-stats.qza --o-visualization demux-filter-stats.qzv
 
