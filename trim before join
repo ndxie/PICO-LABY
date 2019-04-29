@@ -1,1 +1,16 @@
+#quality filter#
+
+qiime quality-filter q-score-joined --i-demux demux.qza --p-min-quality 20 --p-quality-window 3  --p-min-length-fraction 0.75 --p-max-ambiguous 0 --o-filtered-sequences demux-filtered-unjoined.qza --o-filter-stats demux-filtered-unjoined-stats.qza
+
+qiime metadata tabulate --m-input-file demux-filtered-unjoined-stats.qza --o-visualization demux-filtered-unjoined-stats.qzv
+
+#join the reads#
+
+qiime vsearch join-pairs --i-demultiplexed-seqs demux-filtered-unjoined.qza --p-minovlen 10 --p-maxdiffs 1 --o-joined-sequences demux-filtered-joined-1maxdiff.qza
+
+qiime demux summarize --i-data demux-filtered-joined-1maxdiff.qza --o-visualization demux-filtered-joined-1maxdiff.qzv
+
+qiime tools view demux-filtered-joined-1maxdiff
+
+
 
