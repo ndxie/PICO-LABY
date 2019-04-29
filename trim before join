@@ -5,12 +5,22 @@ qiime quality-filter q-score-joined --i-demux demux.qza --p-min-quality 20 --p-q
 qiime metadata tabulate --m-input-file demux-filtered-unjoined-stats.qza --o-visualization demux-filtered-unjoined-stats.qzv
 
 #join the reads#
+#allow 1 mismatch
+qiime vsearch join-pairs --i-demultiplexed-seqs demux-filtered-unjoined.qza --p-minovlen 10 --p-maxdiffs 1 --o-joined-sequences demux-filtered-joined-1mismatch.qza
 
-qiime vsearch join-pairs --i-demultiplexed-seqs demux-filtered-unjoined.qza --p-minovlen 10 --p-maxdiffs 1 --o-joined-sequences demux-filtered-joined-1maxdiff.qza
+qiime demux summarize --i-data demux-filtered-joined-1maxdiff.qza --o-visualization demux-filtered-joined-1mismatch.qzv
 
-qiime demux summarize --i-data demux-filtered-joined-1maxdiff.qza --o-visualization demux-filtered-joined-1maxdiff.qzv
+#allow 2 mismatch
+qiime vsearch join-pairs --i-demultiplexed-seqs demux-filtered-unjoined.qza --p-minovlen 10 --p-maxdiffs 2 --o-joined-sequences demux-filtered-joined-2mismatch.qza
 
-qiime tools view demux-filtered-joined-1maxdiff
+qiime demux summarize --i-data demux-filtered-joined-2mismatch.qza --o-visualization demux-filtered-joined-2mismatch.qzv
+
+#allow 3 mismatch
+qiime vsearch join-pairs --i-demultiplexed-seqs demux-filtered-unjoined.qza --p-minovlen 10 --p-maxdiffs 3 --o-joined-sequences demux-filtered-joined-3mismatch.qza
+
+qiime demux summarize --i-data demux-filtered-joined-3mismatch.qza --o-visualization demux-filtered-joined-3mismatch.qzv
+
+qiime tools view demux-filtered-joined-1mismatch
 
 
 
