@@ -1,12 +1,12 @@
 #quality filter#
 
-qiime quality-filter q-score --i-demux demux.qza --p-min-quality 20 --p-quality-window 3  --p-min-length-fraction 0.75 --p-max-ambiguous 0 --o-filtered-sequences demux-filtered-unjoined.qza --o-filter-stats demux-filtered-unjoined-stats.qza --output-dir ~/PICO-LABY/filter
+qiime quality-filter q-score --i-demux demux.qza --p-min-quality 20 --p-quality-window 3  --p-min-length-fraction --p-max-ambiguous 0 --o-filtered-sequences trimmed.qza --o-filter-stats trim-stats.qza
 
-qiime metadata tabulate --m-input-file demux-filtered-unjoined-stats.qza --o-visualization demux-filtered-unjoined-stats.qzv
+qiime metadata tabulate --m-input-file demux-trim-stats.qza --o-visualization demux-trim-stats.qzv
 
 #join the reads#
 #allow 1 mismatch
-qiime vsearch join-pairs --i-demultiplexed-seqs demux-filtered-unjoined.qza --p-minovlen 10 --p-maxdiffs 1 --o-joined-sequences demux-filtered-joined-1mismatch.qza --output-dir ~/PICO-LABY/join-1mismatch
+qiime vsearch join-pairs --i-demultiplexed-seqs trimmed.qza --p-minovlen 10 --p-maxdiffs 1 --o-joined-sequences joined-1mismatch.qza --output-dir ~/PICO-LABY/join-1mismatch
 
 qiime demux summarize --i-data demux-filtered-joined-1maxdiff.qza --o-visualization demux-filtered-joined-1mismatch.qzv
 
