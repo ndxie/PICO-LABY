@@ -12,18 +12,13 @@ ls *.fastq | awk -F '_L001' '{print $1'} | uniq > sample_names.txt
 # Synchronizing reads in R1 & R2 files
 while read p; do perl ../resync --fwd=''"$p"'_L001_R1_001_trim20.fastq' -rev=''"$p"'_L001_R2_001_trim20.fastq'; done < sample_names.txt
 
-# Move the sync read files to a new folder "sync" and export the file names
+# Move the sync read files to a new folder "sync" 
 mkdir sync
-mv *sync* sync
+mv *sync.fastq sync
 cd sync
-find $PWD -name *sync* > filenames.txt
 
 # import the paired-end fastq files into QIIME 2 #
-qiime tools import \
-  --type 'SampleData[PairedEndSequencesWithQuality]' \
-  --input-path manifest \
-  --output-path trimmed.qza \
-  --source-format PairedEndFastqManifestPhred33
+qiime tools import --type 'SampleData[PairedEndSequencesWithQuality]' --input-path manifest --output-path trimmed.qza --source-format PairedEndFastqManifestPhred33
 qiime demux summarize --i-data trimmed.qza --o-visualization trimmed.qzv
 
 # join the reads (allow 1 mismatch) #
