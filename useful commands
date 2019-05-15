@@ -9,3 +9,8 @@ cat reads.fastq | awk '{if(NR%4==2) print length($1)}' | sort -n | uniq -c > rea
 reads<-read.csv(file="read_length.txt", sep="", header=FALSE)
 plot (reads$V2,reads$V1,type="l",xlab="read length",ylab="occurences",col="blue")
 
+awk '/^>/ {if (seqlen){print seqlen}; print ;seqlen=0;next; } { seqlen += length($0)}END{print seqlen}' file.fa
+
+cat file.fa |awk '{if(NR%2==0){print length($0)}}' |sort |uniq -c
+
+cat reads.fasta | awk '{if(NR%2==0) print length($0)}' | sort -n | uniq -c > read_length.txt
