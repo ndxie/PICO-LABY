@@ -2,5 +2,10 @@
 # This script can be applied to remove sequences from a fasta or fastq file based on input criteria
 filter_fasta.py -f inseqs.fasta -o otu_map_filtered_seqs.fasta -m otu_map.txt
 
+awk 'NR%4 == 2 {lengths[length($0)]++} END {for (l in lengths) {print l, lengths[l]}}' file.fastq
 
+cat reads.fastq | awk '{if(NR%4==2) print length($1)}' | sort -n | uniq -c > read_length.txt
+
+reads<-read.csv(file="read_length.txt", sep="", header=FALSE)
+plot (reads$V2,reads$V1,type="l",xlab="read length",ylab="occurences",col="blue")
 
