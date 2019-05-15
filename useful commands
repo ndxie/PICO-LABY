@@ -1,0 +1,6 @@
+# filter_fasta.py in QIIME 1 (http://qiime.org/scripts/filter_fasta.html)
+# This script can be applied to remove sequences from a fasta or fastq file based on input criteria
+filter_fasta.py -f inseqs.fasta -o otu_map_filtered_seqs.fasta -m otu_map.txt
+
+
+
