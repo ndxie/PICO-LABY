@@ -26,5 +26,8 @@ qiime vsearch join-pairs --i-demultiplexed-seqs trimmed.qza --p-minovlen 10 --p-
 qiime demux summarize --i-data joined-3mismatch.qza --o-visualization joined-3mismatch.qzv
 qiime tools view joined-3mismatch.qzv
 
+# deblur #
+qiime tools import --type 'FeatureData[Sequence]' --input-path silva_132_99_18S.fna --output-path silva_132_99_18S.qza
 
+qiime deblur denoise-other --i-demultiplexed-seqs joined-3mismatch.qza --i-reference-seqs silva_132_99_18S.qza --p-trim-length 380 --p-min-reads 10 --p-jobs-to-start 4 --p-no-hashed-feature-ids --o-representative-sequences deblur380/rep-seqs.qza --o-table deblur380/table.qza --p-sample-stats --o-stats deblur380/deblur-stats.qza
 
