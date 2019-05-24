@@ -40,6 +40,10 @@ qiime feature-classifier classify-sklearn --i-classifier laby-classifier.qza --i
 
 qiime metadata tabulate --m-input-file taxonomy.qza --o-visualization taxonomy.qzv
 
+##vsearch##
+qiime feature-classifier classify-consensus-vsearch --i-query deblur370-rep-seqs.qza --i-reference-reads silva_132_99_18S.qza --i-reference-taxonomy ref-taxonomy.qza --o-classification deblur370-taxonomy-vsearch.qza --p-threads 4
+
+
 
 #non-laby removal#
 
