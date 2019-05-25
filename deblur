@@ -27,7 +27,6 @@ qiime deblur denoise-other --i-demultiplexed-seqs demux-joined-filtered.qza --i-
 
 qiime deblur visualize-stats --i-deblur-stats deblur-stats.qza --o-visualization deblur-stats.qzv
 
-
 #taxonomy annotation#
 
 qiime tools import --type 'FeatureData[Taxonomy]' --source-format HeaderlessTSVTaxonomyFormat --input-path taxonomy_all_levels.txt --output-path ref-taxonomy.qza
@@ -42,6 +41,8 @@ qiime metadata tabulate --m-input-file taxonomy.qza --o-visualization taxonomy.q
 
 ##vsearch##
 qiime feature-classifier classify-consensus-vsearch --i-query deblur370-rep-seqs.qza --i-reference-reads silva_132_99_18S.qza --i-reference-taxonomy ref-taxonomy.qza --o-classification deblur370-taxonomy-vsearch.qza --p-threads 4
+##blast+##
+qiime feature-classifier classify-consensus-blast --i-query deblur370-rep-seqs.qza --i-reference-reads silva_132_99_18S.qza --i-reference-taxonomy ref-taxonomy.qza --o-classification deblur370-taxonomy-vsearch.qza
 
 
 
