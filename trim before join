@@ -33,6 +33,7 @@ qiime deblur denoise-other --i-demultiplexed-seqs joined-3mismatch.qza --i-refer
 
 qiime deblur visualize-stats --i-deblur-stats deblur380-stats.qza --o-visualization deblur380-stats.qzv
 
+
 #taxonomy annotation###blast+##
 
 qiime tools import --type 'FeatureData[Taxonomy]' --source-format HeaderlessTSVTaxonomyFormat --input-path taxonomy_all_levels.txt --output-path ref-taxonomy.qza
@@ -41,11 +42,13 @@ qiime feature-classifier classify-consensus-blast --i-query deblur380-rep-seqs.q
 
 qiime metadata tabulate --m-input-file deblur380-taxonomy-blast.qza --o-visualization deblur380-taxonomy-blast.qzv
 
+
 #non-laby removal#
 
 qiime taxa filter-table --i-table deblur380-table.qza --i-taxonomy deblur380-taxonomy-blast.qza --p-include Labyrinthulomycetes --o-filtered-table deblur380-table-laby.qza
 
 qiime taxa filter-seqs --i-sequences deblur380-rep-seqs.qza --i-taxonomy deblur380-taxonomy-blast.qza --p-include Labyrinthulomycetes ----o-filtered-sequences deblur380-rep-seqs-laby.qza
+
 
 #rarefaction#
 
