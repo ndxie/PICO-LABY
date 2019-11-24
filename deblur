@@ -42,7 +42,7 @@ qiime metadata tabulate --m-input-file taxonomy.qza --o-visualization taxonomy.q
 ##vsearch##
 qiime feature-classifier classify-consensus-vsearch --i-query deblur370-rep-seqs.qza --i-reference-reads silva_132_99_18S.qza --i-reference-taxonomy ref-taxonomy.qza --o-classification deblur370-taxonomy-vsearch.qza --p-threads 4
 ##blast+##
-qiime feature-classifier classify-consensus-blast --i-query deblur370-rep-seqs.qza --i-reference-reads silva_132_99_18S.qza --i-reference-taxonomy ref-taxonomy.qza --o-classification deblur370-taxonomy-vsearch.qza
+qiime feature-classifier classify-consensus-blast --i-query deblur380-rep-seqs.qza --i-reference-reads silva_132_99_18S.qza --i-reference-taxonomy ref-taxonomy.qza --o-classification deblur380-taxonomy-blast.qza
 
 
 
