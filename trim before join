@@ -49,6 +49,8 @@ qiime taxa filter-table --i-table deblur380-table.qza --i-taxonomy deblur380-tax
 
 qiime taxa filter-seqs --i-sequences deblur380-rep-seqs.qza --i-taxonomy deblur380-taxonomy-blast.qza --p-include Labyrinthulomycetes --o-filtered-sequences deblur380-rep-seqs-laby.qza
 
+qiime feature-table summarize --i-table deblur380-table-laby.qza --o-visualization deblur380-table-laby.qzv
+
 
 #rarefaction#
 
