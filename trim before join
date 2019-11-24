@@ -31,3 +31,33 @@ qiime tools import --type 'FeatureData[Sequence]' --input-path silva_132_99_18S.
 
 qiime deblur denoise-other --i-demultiplexed-seqs joined-3mismatch.qza --i-reference-seqs silva_132_99_18S.qza --p-trim-length 380 --p-min-reads 10 --p-jobs-to-start 4 --p-no-hashed-feature-ids --o-representative-sequences deblur380-rep-seqs.qza --o-table deblur380-table.qza --p-sample-stats --o-stats deblur380-stats.qza
 
+qiime deblur visualize-stats --i-deblur-stats deblur380-stats.qza --o-visualization deblur380-stats.qzv
+
+#taxonomy annotation###blast+##
+
+qiime tools import --type 'FeatureData[Taxonomy]' --source-format HeaderlessTSVTaxonomyFormat --input-path taxonomy_all_levels.txt --output-path ref-taxonomy.qza
+
+qiime feature-classifier classify-consensus-blast --i-query deblur380-rep-seqs.qza --i-reference-reads silva_132_99_18S.qza --i-reference-taxonomy ref-taxonomy.qza --o-classification deblur380-taxonomy-blast.qza
+
+qiime metadata tabulate --m-input-file deblur380-taxonomy-blast.qza --o-visualization deblur380-taxonomy-blast.qzv
+
+#non-laby removal#
+
+qiime taxa filter-table --i-table deblur380-table.qza --i-taxonomy deblur380-taxonomy-blast.qza --p-include Labyrinthulomycetes --o-filtered-table deblur380-table-laby.qza
+
+qiime taxa filter-seqs --i-sequences deblur380-rep-seqs.qza --i-taxonomy deblur380-taxonomy-blast.qza --p-include Labyrinthulomycetes ----o-filtered-sequences deblur380-rep-seqs-laby.qza
+
+#rarefaction#
+
+qiime diversity alpha-rarefaction --i-table deblur380-table-laby.qza --p-max-depth 20000 --m-metadata-file metadata.txt --o-visualization laby-rarefaction-curves.qzv
+
+qiime feature-table rarefy --i-table deblur380-table-laby.qza --p-sampling-depth 10000 --o-rarefied-table deblur380-table-laby-rarefied10000.qza
+
+qiime tools export deblur380-table-laby-rarefied10000.qza --output-dir deblur380-table-laby-rarefied10000
+
+
+#diversity#
+
+qiime taxa barplot --i-table table-laby-rarefied.qza --i-taxonomy taxonomy.qza --m-metadata-file metadata.txt --o-visualization barplot.qzv
+ 
+
